@@ -23,7 +23,7 @@ public class IBDMS_Drone {
         String hostName = "localhost";
         String message = "Hello from the Drone client";
         try {
-            int serverPort = 7896;
+            int serverPort = 8888;
 
             s = new Socket(hostName, serverPort);
             DataInputStream in = new DataInputStream(s.getInputStream());

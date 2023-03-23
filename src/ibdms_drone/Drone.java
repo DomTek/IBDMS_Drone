@@ -1,5 +1,7 @@
 package ibdms_drone;
 
+import java.io.*
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -9,7 +11,7 @@ package ibdms_drone;
  *
  * @author Nighthawk
  */
-public class Drone {
+public class Drone implements Serializable{
     
    private int ID;
    private String name;
