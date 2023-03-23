@@ -4,7 +4,12 @@
  */
 package ibdms_drone;
 
-import java.util.Scanner;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.net.*;
+import javax.net.ssl.HostnameVerifier;
 
 /**
  *
@@ -12,23 +17,35 @@ import java.util.Scanner;
  */
 public class IBDMS_Drone {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        
-        //Creates scanner to take input of the System by the user and accept an ID and name for the drone
-        Scanner inScan = new Scanner(System.in);
-        System.out.println("please enter the Drone ID: ");
-        int droneId = inScan.nextInt();
-        System.out.println("Please enter a name for the Drone: ");
-        String droneName = inScan.nextLine();
-        
-        
-        Drone[] drone = new Drone[1];
-        Drone drones1 = new Drone(droneId, droneName, 0,0 );
-        drone[0] = drones1;
-        
+    public static void main(String args[]) {
+
+        Socket s = null;
+        String hostName = "localhost";
+        String message = "Hello from the Drone client";
+        try {
+            int serverPort = 7896;
+
+            s = new Socket(hostName, serverPort);
+            DataInputStream in = new DataInputStream(s.getInputStream());
+            DataOutputStream out = new DataOutputStream(s.getOutputStream());
+            out.writeUTF(message);
+            String data = in.readUTF();
+            System.out.println("Message Recieved From Server: " + data);
+        } catch (UnknownHostException e) {
+            System.err.println("Sock: " + e.getMessage());
+        } catch (EOFException e) {
+            System.out.println("EOF" + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("IO" + e.getMessage());
+        }
+        finally {
+            if (s != null)
+                try {
+                s.close();
+            } catch (IOException e) {
+                System.out.println("close" + e.getMessage());
+            }
+
+        }
     }
-    
 }
