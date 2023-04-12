@@ -21,7 +21,7 @@ public class IBDMS_Drone {
 
         Socket s = null;
         String hostName = "localhost";
-        String message = "Hello from the Drone client";
+        String message = "New Drone";
         try {
             int serverPort = 8888;
 
@@ -29,6 +29,7 @@ public class IBDMS_Drone {
             DataInputStream in = new DataInputStream(s.getInputStream());
             DataOutputStream out = new DataOutputStream(s.getOutputStream());
             out.writeUTF(message);
+            out.flush();
             String data = in.readUTF();
             System.out.println("Message Recieved From Server: " + data);
         } catch (UnknownHostException e) {
