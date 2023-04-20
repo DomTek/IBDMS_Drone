@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package ibdms_drone;
 
 import java.io.DataInputStream;
@@ -9,15 +5,15 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.*;
-import javax.net.ssl.HostnameVerifier;
 
-/**
- *
- * @author H529780
- */
 public class IBDMS_Drone {
 
     public static void main(String args[]) {
+
+        int ID;
+        String name;
+        int posX;
+        int posY;
 
         Socket s = null;
         String hostName = "localhost";
@@ -31,17 +27,25 @@ public class IBDMS_Drone {
             out.writeUTF(message);
             out.flush();
             String data = in.readUTF();
-            System.out.println("Message Recieved From Server: " + data);
+            System.out.println("Message Received From Server: " + data);
 
             boolean keepRunning = true;
             while (keepRunning) {
-                // sending and receiving logic will be added next
-
                 data = in.readUTF();
                 if ("shutdown".equalsIgnoreCase(data)) {
                     keepRunning = false;
                 } else {
                     System.out.println("Message Received From Server: " + data);
+                    if (data.startsWith("Drone Name: ")) {
+                        name = data.substring("Drone Name: ".length());
+                        ID = in.readInt();
+                        posX = in.readInt();
+                        posY = in.readInt();
+
+                        // creates the drone using the drone class constructer
+                        Drone drone = new Drone(ID, name, posX, posY);
+
+                    }
                 }
             }
 
@@ -58,7 +62,7 @@ public class IBDMS_Drone {
             } catch (IOException e) {
                 System.out.println("close" + e.getMessage());
             }
-
         }
     }
+
 }

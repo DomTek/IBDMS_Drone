@@ -1,6 +1,7 @@
 package ibdms_drone;
 
 import java.io.*;
+import java.util.Random;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -59,4 +60,12 @@ public class Drone implements Serializable{
         this.posY = posY;
     }
     
+    //Methode to use with a time to randomly update the X and Y positioning.
+    public void updatePosition() {
+        Random random = new Random();
+        
+        //This will generate randome moves of the drones and can be adjusted
+        posX += random.nextInt(3) - 1;
+        posY += random.nextInt(3) - 1; 
+    }
 }
