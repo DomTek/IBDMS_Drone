@@ -23,7 +23,7 @@ public class IBDMS_Drone {
         String hostName = "localhost";
         String message = "New Drone";
         try {
-            int serverPort = 8888;
+            int serverPort = 7896;
 
             s = new Socket(hostName, serverPort);
             DataInputStream in = new DataInputStream(s.getInputStream());
@@ -32,14 +32,26 @@ public class IBDMS_Drone {
             out.flush();
             String data = in.readUTF();
             System.out.println("Message Recieved From Server: " + data);
+
+            boolean keepRunning = true;
+            while (keepRunning) {
+                // sending and receiving logic will be added next
+
+                data = in.readUTF();
+                if ("shutdown".equalsIgnoreCase(data)) {
+                    keepRunning = false;
+                } else {
+                    System.out.println("Message Received From Server: " + data);
+                }
+            }
+
         } catch (UnknownHostException e) {
             System.err.println("Sock: " + e.getMessage());
         } catch (EOFException e) {
             System.out.println("EOF" + e.getMessage());
         } catch (IOException e) {
             System.err.println("IO" + e.getMessage());
-        }
-        finally {
+        } finally {
             if (s != null)
                 try {
                 s.close();
