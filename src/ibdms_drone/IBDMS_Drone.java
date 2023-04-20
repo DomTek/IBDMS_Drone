@@ -8,15 +8,12 @@ import java.net.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class IBDMS_Drone {
 
     public static void main(String args[]) {
-
-        int ID;
-        String name;
-        int posX;
-        int posY;
 
         Socket s = null;
         String hostName = "localhost";
@@ -39,24 +36,22 @@ public class IBDMS_Drone {
                     keepRunning = false;
                 } else {
                     System.out.println("Message Received From Server: " + data);
-                    if (data.startsWith("Drone Name: ")) {
-                        name = data.substring("Drone Name: ".length());
-                        ID = in.readInt();
-                        posX = in.readInt();
-                        posY = in.readInt();
+                    String name = data.substring("Drone Name: ".length());
+                    int ID = in.readInt();
+                    int posX = in.readInt();
+                    int posY = in.readInt();
 
-                        // creates the drone using the drone class constructor
-                        Drone drone = new Drone(ID, name, posX, posY);
-                        // print out for debunging
-                        System.out.println("Drone created with ID: " + ID + ", Name: " + name + ", Position: (" + posX + ", " + posY + ")");
+                    // creates the drone using the drone class constructor
+                    Drone drone = new Drone(ID, name, posX, posY);
+                    // print out for debugging
+                    System.out.println("Drone created with ID: " + ID + ", Name: " + name + ", Position: (" + posX + ", " + posY + ")");
 
-                        // Change the drone's position every second, update it, and send the updated position to the server
-                        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-                        scheduler.scheduleAtFixedRate(() -> {
-                            drone.updatePosition();
-                            drone.sendUpdatedPosition(out);
-                        }, 0, 1, TimeUnit.SECONDS);
-                    }
+                    // Change the drone's position every second, update it, and send the updated position to the server
+                    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+                    scheduler.scheduleAtFixedRate(() -> {
+                        drone.updatePosition();
+                        drone.sendUpdatedPosition(out);
+                    }, 0, 1, TimeUnit.SECONDS);
                 }
             }
 
