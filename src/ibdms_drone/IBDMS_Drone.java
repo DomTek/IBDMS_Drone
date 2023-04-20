@@ -5,6 +5,9 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class IBDMS_Drone {
 
@@ -42,9 +45,17 @@ public class IBDMS_Drone {
                         posX = in.readInt();
                         posY = in.readInt();
 
-                        // creates the drone using the drone class constructer
+                        // creates the drone using the drone class constructor
                         Drone drone = new Drone(ID, name, posX, posY);
+                        // print out for debunging
+                        System.out.println("Drone created with ID: " + ID + ", Name: " + name + ", Position: (" + posX + ", " + posY + ")");
 
+                        // Change the drone's position every second, update it, and send the updated position to the server
+                        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+                        scheduler.scheduleAtFixedRate(() -> {
+                            drone.updatePosition();
+                            drone.sendUpdatedPosition(out);
+                        }, 0, 1, TimeUnit.SECONDS);
                     }
                 }
             }
@@ -63,6 +74,7 @@ public class IBDMS_Drone {
                 System.out.println("close" + e.getMessage());
             }
         }
+
     }
 
 }
