@@ -7,17 +7,16 @@ import java.util.Random;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author Nighthawk
  */
-public class Drone implements Serializable{
-    
-   private int ID;
-   private String name;
-   private int posX;
-   private int posY;    
+public class Drone implements Serializable {
+
+    private int ID;
+    private String name;
+    private int posX;
+    private int posY;
 
     public Drone(int ID, String name, int posX, int posY) {
         this.ID = ID;
@@ -26,8 +25,6 @@ public class Drone implements Serializable{
         this.posY = posY;
     }
 
-   
-   
     public int getID() {
         return ID;
     }
@@ -59,24 +56,39 @@ public class Drone implements Serializable{
     public void setPosY(int posY) {
         this.posY = posY;
     }
-    
+
     //Methode to use with a time to randomly update the X and Y positioning.
     public void updatePosition() {
         Random random = new Random();
-        
+
         //This will generate randome moves of the drones and can be adjusted
-        posX += random.nextInt(3) - 1;
-        posY += random.nextInt(3) - 1;
+        posX += random.nextInt(11) - 5;
+        posY += random.nextInt(11) - 5;
+
+        // This will keep the Drone in its boundary
+        if (posX < 0) {
+            posX = 0;
+        } else if (posX > 500) {
+            posX = 500;
+        }
+
+        if (posY < 0) {
+            posY = 0;
+        } else if (posY > 500) {
+            posY = 500;
+        }
+
         //Dprint out for debuging 
         System.out.println("Drone ID: " + ID + " Updated Position: (" + posX + ", " + posY + ")");
     }
-public void sendUpdatedPosition(DataOutputStream out) {
-    try {
-        String updateMessage = "DroneUpdate:" + ID + "," + posX + "," + posY;
-        out.writeUTF(updateMessage);
-        System.out.println("Drone ID: " + ID + " Sent updated position to server: (" + posX + ", " + posY + ")");
-    } catch (IOException e) {
-        e.printStackTrace();
+
+    public void sendUpdatedPosition(DataOutputStream out) {
+        try {
+            String updateMessage = "DroneUpdate:" + ID + "," + posX + "," + posY;
+            out.writeUTF(updateMessage);
+            System.out.println("Drone ID: " + ID + " Sent updated position to server: (" + posX + ", " + posY + ")");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-}
 }
