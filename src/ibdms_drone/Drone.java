@@ -70,17 +70,13 @@ public class Drone implements Serializable{
         //Dprint out for debuging 
         System.out.println("Drone ID: " + ID + " Updated Position: (" + posX + ", " + posY + ")");
     }
-    public void sendUpdatedPosition(DataOutputStream out) {
-        try {
-            out.writeUTF("Update Position");
-            out.writeInt(ID);
-            out.writeInt(posX);
-            out.writeInt(posY);
-            out.flush();
-            // debiging code
-            System.out.println("Drone ID: " + ID + " Sent updated position to server: (" + posX + ", " + posY + ")");
-        } catch (IOException e) {
-            System.err.println("Error sending updated position to server: " + e.getMessage());
-        }
+public void sendUpdatedPosition(DataOutputStream out) {
+    try {
+        String updateMessage = "DroneUpdate:" + ID + "," + posX + "," + posY;
+        out.writeUTF(updateMessage);
+        System.out.println("Drone ID: " + ID + " Sent updated position to server: (" + posX + ", " + posY + ")");
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
 }
