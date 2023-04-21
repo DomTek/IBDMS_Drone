@@ -33,7 +33,15 @@ public class IBDMS_Drone {
             while (keepRunning) {
                 data = in.readUTF();
                 if ("shutdown".equalsIgnoreCase(data)) {
+                    
                     keepRunning = false;
+                    
+                    // to be exectuted is recall button is pressed
+                } else if("return".equalsIgnoreCase(data)){
+                    out.writeUTF("Returning Home");
+                    out.flush();
+                    keepRunning = false;
+                    
                 } else {
                     System.out.println("Message Received From Server: " + data);
                     String name = data.substring("Drone Name: ".length());

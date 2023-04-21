@@ -24,6 +24,9 @@ public class Drone implements Serializable {
         this.posX = posX;
         this.posY = posY;
     }
+    
+    
+    
 
     public int getID() {
         return ID;
@@ -91,4 +94,5 @@ public class Drone implements Serializable {
             e.printStackTrace();
         }
     }
+    
 }
