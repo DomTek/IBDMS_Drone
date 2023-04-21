@@ -68,14 +68,14 @@ public class Drone implements Serializable {
         // This will keep the Drone in its boundary
         if (posX < 0) {
             posX = 0;
-        } else if (posX > 500) {
-            posX = 500;
+        } else if (posX > 1000) {
+            posX = 1000;
         }
 
         if (posY < 0) {
             posY = 0;
-        } else if (posY > 500) {
-            posY = 500;
+        } else if (posY > 800) {
+            posY = 800;
         }
 
         //Dprint out for debuging 
